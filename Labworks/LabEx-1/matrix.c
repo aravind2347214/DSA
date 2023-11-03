@@ -92,6 +92,7 @@ void subtractSchedule(struct worker *w1,struct worker *w2){
 
 }
 
+
 // To perform Linear Search on the Array of structures
 void searchWorker(char *searchName,int workerCount){
     int i;
