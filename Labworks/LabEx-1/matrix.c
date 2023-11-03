@@ -2,12 +2,14 @@
 #include<conio.h>
 #include<stdio.h>
 
+// creation of a worker structure 
 struct worker{
     int id;
     char name[20];
-    int workerSchedule[3][3];
+    int workerSchedule[3][3];//3 time 3 day hours of working
 }w[100];
 
+// Function to add a new worker
 void addWorkerData(struct worker * w,int id){
     printf("Enter the ID of Worker %d:\n",id+1);
     scanf("%d",&w->id);
@@ -21,6 +23,7 @@ void addWorkerData(struct worker * w,int id){
         }
 }
 
+// Function to show the data of a single worker
 void showWorkerData(struct worker * w){
     printf("\n-------------Worker %d----------------",w->id);
     printf("\nName : %s \nID   :%d\n",w->name,w->id);
@@ -35,6 +38,7 @@ void showWorkerData(struct worker * w){
 
 }
 
+// To delete a particular worker based on ID
 void deleteWorkerData(int id, int *workerCount) {
     int i, j;
     printf("%d",*workerCount);
@@ -64,8 +68,8 @@ void deleteWorkerData(int id, int *workerCount) {
     printf("\nWorker ID %d has been deleted.", id);
 }
 
-
-void addSchedule(struct worker *w1,struct worker *w2){
+// Add Schedule of 2 Workers 2D array addition
+void addSchedule(struct worker * w1,struct worker * w2){
     printf("\nThe Sum of Hours Worker %d and Worker %d is \n",w1->id,w2->id);
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
@@ -76,6 +80,7 @@ void addSchedule(struct worker *w1,struct worker *w2){
 
 }
 
+// Subtract schedule of 2 Workers 2D array subtraction
 void subtractSchedule(struct worker *w1,struct worker *w2){
     printf("\nThe Difrence of Hours Worker %d and Worker %d is \n",w1->id,w2->id);
     for (int i = 0; i < 3; ++i) {
@@ -87,17 +92,28 @@ void subtractSchedule(struct worker *w1,struct worker *w2){
 
 }
 
-void searchWorker(char *searchName){
+// To perform Linear Search on the Array of structures
+void searchWorker(char *searchName,int workerCount){
     int i;
-    // perform a linear search on the workers to check the name with search name 
-    for (i = 0; i < 5; ++i) {
+    for (i = 0; i < workerCount; ++i) {
         if(!strcmp(w[i].name,searchName)){
             printf("\nWorker Found!!");
             showWorkerData(&w[i]);
             return;
         }
     }
+    // when given ID does not match
     printf("Worker Not Present with Name %s\n",searchName);
+}
+
+struct worker * checkIdPresence(int searchId,int workerCount){
+    int i;
+    for (i = 0; i < workerCount; ++i) {
+        if(w[i].id==searchId){
+            return &w[i];
+        }
+    }
+    return NULL;
 }
 
 
@@ -109,6 +125,7 @@ void main(){
 
     do{
     choice=0;
+    // Menu on worker management
     printf("\n+-------------Menu------------+\n");
     printf("| 1.Add Worker                |\n");
     printf("| 2.Show Workers              |\n");
@@ -124,6 +141,8 @@ void main(){
     printf("\nEnter Choice : ");
     scanf("%d",&choice);
 
+
+    // choice based if-else-if ladder
     if(choice==1){
         addWorkerData(&w[workerCount++],workerCount);
     }
@@ -143,38 +162,42 @@ void main(){
         char searchName[10];
         printf("Enter name of the worker you want to find : ");
         scanf("%s",&searchName);
-        searchWorker(searchName);
+        searchWorker(searchName,workerCount);
     }
     else if(choice==5){
+        // obtaining 2 IDs to perform addition
         int addId1,addId2;
-        repeatIDsToAdd:
             printf("\nEnter Existing ID of first worker to be Added : ");
             scanf("%d",&addId1);
+            struct worker *aw1 = checkIdPresence(addId1,workerCount);
             printf("\nEnter Existing ID of second worker to be Added : ");
             scanf("%d",&addId2);
-            if(addId1>=workerCount+1 || addId1<0 ||addId2>workerCount+1 || addId2<0 ){
+            struct worker *aw2 = checkIdPresence(addId2,workerCount);
+
+            if(aw1&&aw2)
+                addSchedule(aw1,aw2);  
+            else
                 printf("\nInvalid IDs");
-                goto repeatIDsToAdd;
-            }
-            else{
-                addSchedule(&w[addId1-1],&w[addId2-1]);  
-            }
+            
+
+
     }
-        else if(choice==6){
+    else if(choice==6){
+         // obtaining 2 IDs to perform subtraction
         int subId1,subId2;
-        repeatIDsToSub:
             printf("\nEnter Existing ID of first worker to be Subtracted : ");
             scanf("%d",&subId1);
+            struct worker *sw1 = checkIdPresence(subId1,workerCount);
             printf("\nEnter Existing ID of second worker to be Subtracted : ");
             scanf("%d",&subId2);
-            if(subId1>=workerCount || subId1<0 ||subId2>=workerCount || subId2<0 ){
-                printf("\nInvalid IDs");
-                goto repeatIDsToSub;
-            }
-            else{
-                subtractSchedule(&w[subId1-1],&w[subId2-1]);  
-            }
-    }
+            struct worker *sw2 = checkIdPresence(subId2,workerCount);
 
+             if(sw1&&sw2)
+                subtractSchedule(sw1,sw2);  
+            else
+                printf("\nInvalid IDs");
+
+    }
+    // do-while running till exit condition of (7)
     }while(choice<7);
 }
