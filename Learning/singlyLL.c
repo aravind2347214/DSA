@@ -1,6 +1,9 @@
+
+
 #include<conio.h>
 #include<stdio.h>
 #include<stdlib.h>
+
 struct node{
 	int info;
 	struct node *right;
@@ -149,6 +152,32 @@ void delete_middle()
 	
 }
 
+void search(){
+	int data;
+	printf("Enter data to be Searched");
+	scanf("%d",&data);
+	temp = first;
+	int pos = 0;
+	int foundFlag=0;
+		while(temp->right!=NULL)
+	   {
+		pos++;
+		if(temp->info==data)
+		{
+
+			printf("Data found at position : %d ",pos);
+			foundFlag=1;
+			break;
+		}
+		temp=temp->right;
+	}
+	if(foundFlag==0){
+		printf("Data is not in List");
+	}
+	
+
+}
+
 void main()
 {
 	int opt;
@@ -166,7 +195,8 @@ void main()
 	printf(" | 6.Delete Begining    |\n");
 	printf(" | 7.Delete Middle      |\n");
 	printf(" | 8.Delete End         |\n");
-	printf(" | 9.Exit               |\n");
+	printf(" | 9.Search             |\n");
+	printf(" | 10.Exit              |\n");
     printf(" +----------------------+\n");
 	printf("enter your option");
 	scanf("%d",&opt);
@@ -180,7 +210,8 @@ void main()
 		case 6:delete_begining();break;
 		case 7:delete_middle();break;
 		case 8:delete_end();break;
-		case 9:exit(0);
+		case 9:search();break;
+		case 10:exit(0);
 	}
 	getch();
  }
