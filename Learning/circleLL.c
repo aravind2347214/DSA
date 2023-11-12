@@ -35,7 +35,8 @@ int create()
 	{
 		temp=temp->right;
 		last=temp;
-	}	      
+	}
+	last->right=first;	      
   }
 }
 void display()
@@ -78,6 +79,7 @@ void insert_end()
 	}	      
    last->right=newptr;
 	last=newptr;
+	last->right=first;	
 }
 
 void insert_middle()
@@ -90,8 +92,8 @@ void insert_middle()
 	printf("\nenter data to be entered");
 	scanf("%d",&newptr->info);
 	temp=first;
-	while(temp->right!=NULL)
-	   {
+		while(temp->right!=NULL)
+	 {
 		c++;
 		if(c+1==pos)
 		{  
@@ -112,6 +114,8 @@ void delete_begining()
 	temp->right=NULL;
     printf("\nFirst Element deleted\n");
 	free(temp);
+
+	last->right=first;	
 }
 
 void delete_end()
@@ -127,6 +131,7 @@ void delete_end()
 	last=prev;
     printf("\nLast Element deleted\n");
 	free(temp);
+	last->right=first;	
 }
 
 void delete_middle()
