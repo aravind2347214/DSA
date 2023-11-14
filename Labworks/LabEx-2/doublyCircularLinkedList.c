@@ -14,13 +14,17 @@ int create()
 	while(1)
 	{
 		newptr=(struct worker*) malloc(sizeof(struct worker));
+		if(newptr==NULL){
+				printf("Memory allocation error");
+				return 0;
+		}
 		printf("\nEnter Name of worker : ");
 		scanf("%s",&newptr->name);
 		newptr->right=NULL;
 		newptr->left=NULL;
 		if(first==NULL)
 		   first=temp=last=newptr;
-		   else
+		else
 			{
 				temp->right=newptr;
 				newptr->left=temp;
@@ -30,46 +34,50 @@ int create()
 		printf("Want to add more Workers(Y/N)");
 		ch=getch();
 		if(ch=='n'||ch=='N')
-         return(0);	
-	temp=first;
-	while(temp->right!=NULL)
-	{
-		temp=temp->right;
-		last=temp;
-	}
-	 last->right = first;
-     first->left = last;	      
-   }
-   
-	
+		{
+			temp=first;
+			while(temp->right!=NULL)
+			{
+				temp=temp->right;
+				last=temp;
+			}
+			last->right = first;
+			first->left = last;
+			return(0);	
+		}
+		      
+   }	
 }
+
+
 void display_forward()
 {
-	temp=first;
-	printf("Forward Display of Workers : \n");
-	
-	while(temp!=NULL)
-	{
-		printf("<--[%s]-->",temp->name);
-		temp=temp->right;
-	}
+	temp= first;
+    if(temp==NULL){
+        printf("There are no workers\n"); 
+        return;
+    }
+    printf("Forward Display of Workers : \n");
+	do{
+		printf("[%s]--->",temp -> name );
+        temp = temp-> right ;
+	}while(temp!=first);
+	printf("(%s)",last->right->name);
 }
 
 void display_backward()
 {
-	temp=first;
-    printf("Reverse Display of Workers : \n");
-	while(temp->right!=NULL)
-	{
-		temp=temp->right;
-		last=temp;
-	}
-	temp=last;
-	while(temp!=NULL)
-	{
-		printf("<--[%s]-->",temp->name);
-		temp=temp->left;	
-	}
+	temp= last;
+    if(temp==NULL){
+        printf("There are no workers\n"); 
+        return;
+    }
+    printf("Backward Display of Workers : \n");
+	do{
+		printf("[%s]--->",temp -> name );
+        temp = temp-> left ;
+	}while(temp!=last);
+	printf("(%s)",first->left->name);
 }
 
 void search(){
@@ -101,7 +109,11 @@ void search(){
 
 void insert_begining()
 {
-   newptr=(struct worker*) malloc(sizeof(struct worker)); 	  	
+   newptr=(struct worker*) malloc(sizeof(struct worker)); 	  
+   if(newptr==NULL){
+		printf("Memory allocation error");
+		return;
+	}	
    printf("\nEnter Worker Name ");
    scanf("%s",&newptr->name);
    newptr->left=last;
@@ -114,13 +126,18 @@ void insert_begining()
 
 void insert_end()
 {
-   newptr=(struct worker*) malloc(sizeof(struct worker)); 	  	
+   newptr=(struct worker*) malloc(sizeof(struct worker)); 	
+   if(newptr==NULL){
+		printf("Memory allocation error");
+		return;
+	}  	
    printf("\nEnter Worker Name ");
    scanf("%s",&newptr->name);
 	newptr->right=first;
     last->right=newptr;
 	newptr->left=last;
 	last=newptr;
+	first->left=last;
 }
 
 void delete_begining()
@@ -177,13 +194,17 @@ void delete_middle(){
 void insert_middle()
 {
 	int pos,c;c=0;
-	newptr=(struct worker*) malloc(sizeof(struct worker)); 
+	newptr=(struct worker*) malloc(sizeof(struct worker));
+	if(newptr==NULL){
+		printf("Memory allocation error");
+		return;
+	} 
 	printf("\nEnter the position  at which insert Worker");
 	scanf("%d",&pos);	  	
 	printf("\nEnter Worker Name");
 	scanf("%s",&newptr->name);
 	temp=first;
-	while(temp->right!=NULL)
+	while(temp!=NULL)
 	{
 		c++;
 		if(c==pos)
@@ -193,6 +214,7 @@ void insert_middle()
 			newptr->left=prev;
 			temp->left=newptr;
 			newptr->right=temp;
+			break;
 		}
 		temp=temp->right;
 	}

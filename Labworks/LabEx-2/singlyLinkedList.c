@@ -16,6 +16,10 @@ int create(){
 	while(1)
 	{
 		newptr=(struct worker*) malloc(sizeof(struct worker));
+		if(newptr==NULL){
+				printf("Memory allocation error");
+				return 0;
+			}
 		printf("\nEnter Name of worker");
 		scanf("%s",&newptr->name);
 		numberOfNodes++;
@@ -54,8 +58,13 @@ void display(){
 	printf("NULL \n");
 }
 
+
 void insert_begining(){
 	newptr = (struct worker *)malloc( sizeof( struct worker ) );
+	if(newptr==NULL){
+		printf("Memory allocation error");
+		return;
+	}
 	printf("\nEnter Name of new Worker : ");
 	scanf("%s",&newptr->name);
 	numberOfNodes++;
@@ -73,6 +82,10 @@ void insert_begining(){
 
 void insert_end(){
 	newptr=(struct worker*)malloc(sizeof(struct worker));
+	if(newptr==NULL){
+		printf("Memory allocation error");
+		return;
+	}
 	printf("\nEnter Name of new Worker : ");
 	scanf("%s",&newptr->name);
 	numberOfNodes++;
@@ -89,6 +102,10 @@ void insert_end(){
 void insert_middle(){
 	int pos,c;c=0;
 	newptr=(struct worker*)malloc(sizeof(struct worker));
+	if(newptr==NULL){
+		printf("Memory allocation error");
+		return ;
+	}
 	printf("Enter Postion for worker to be inserted : ");
 	scanf("%d",&pos);
 	printf("\nEnter Name of new Worker : ");
@@ -187,6 +204,16 @@ void search(){
 	}
 }
 
+void exit_program(){
+    temp = first;
+    while (temp != NULL) {
+        struct worker* nextNode = temp->right;
+        free(temp);
+        temp = nextNode;
+    }
+	exit(0);
+}
+
 
 void main()
 {
@@ -221,7 +248,7 @@ void main()
 		case 7:numberOfNodes>=2?delete_middle():printf("\nNeed More Than 1 Node\n");break;
 		case 8:delete_end();break;
 		case 9:search();break;
-		case 10:exit(0);
+		case 10:exit_program();
 	}
 	getch();
  }

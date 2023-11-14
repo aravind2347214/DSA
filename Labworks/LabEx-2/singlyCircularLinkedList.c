@@ -14,6 +14,10 @@ int create(){
 	while(1)
 	{
 		newptr=(struct worker*) malloc(sizeof(struct worker));
+		if(newptr==NULL){
+			printf("Memory allocation error");
+			return 0;
+	    }
 		printf("\nEnter Name of worker");
 		scanf("%s",&newptr->name);
 		newptr->right=NULL;
@@ -27,15 +31,18 @@ int create(){
 		printf("want to add more workers(Y/N)");
 		ch=getch();
 		if(ch=='n'||ch=='N')
-         return(0);	
-	temp=first;
-	while(temp->right!=NULL)
-	{
-		temp=temp->right;
-		last=temp;
-	}	
+         {
+			temp=first;
+			while(temp->right!=NULL)
+			{
+				temp=temp->right;
+				last=temp;
+			}	
+			last->right= first; 
+			return(0);
+		 }
   }
-    last->right= first;      
+	     
 }
 
 
@@ -45,15 +52,19 @@ void display(){
         printf("There are no workers\n"); 
         return;
     }
-    while(temp != NULL) {
-        printf("[%s]--->",temp -> name );
+	do{
+		printf("[%s]--->",temp -> name );
         temp = temp-> right ;
-    }
-	printf("NULL \n");
+	}while(temp!=first);
+	printf("(%s)",last->right->name);
 }
 
 void insert_begining(){
 	newptr = (struct worker *)malloc( sizeof( struct worker ) );
+	if(newptr==NULL){
+			printf("Memory allocation error");
+			return;
+	    }
 	printf("\nEnter Name of new Worker : ");
 	scanf("%s",&newptr->name);
 	newptr->right=NULL;
@@ -66,28 +77,19 @@ void insert_begining(){
 		newptr->right=first;
 		first=newptr;
 	}
-    temp=first;
-    while(temp->right!=NULL)
-	{
-		temp=temp->right;
-		last=temp;
-	}
     last->right= first;      
-
 }
 
 void insert_end(){
 	newptr=(struct worker*)malloc(sizeof(struct worker));
+	if(newptr==NULL){
+			printf("Memory allocation error");
+			return;
+	    }
 	printf("\nEnter Name of new Worker : ");
 	scanf("%s",&newptr->name);
 	newptr->right=NULL;
-	temp= first;
-	while(temp!=NULL){
-		last=temp;
-		temp=temp->right;
-	}
 	last->right=newptr;
-	newptr->right=NULL;
     last=newptr;
     last->right=first;
 
@@ -121,6 +123,7 @@ void delete_begining(){
 	else{
 		temp = first;
 		first = first -> right;
+		last->right=first;
 		free(temp);
 		printf("\nFirst Worker deleted\n");
 
@@ -134,11 +137,9 @@ void delete_end(){
 		return;
 	}
 	temp=first;
-	while(temp->right!=NULL)
-	{
+	while(temp!=last){
 		prev=temp;
 		temp=temp->right;
-		last=temp;
 	}	     
 	prev->right=NULL;
 	last=prev;
@@ -178,17 +179,31 @@ void search(){
 	temp = first;
 	printf("\nEnter name of the worker you want to find : ");
 	scanf("%s",&search_name);
-	while(temp!=NULL){
+
+	do{
 		pos++;
 		if(strcmpi(search_name,temp->name)==0){
 			foundFlag =1;
 			printf("\nWorker Found at %d",pos);
+			break;
 		}
-		temp= temp->right;	
-	}
+		temp= temp->right;
+
+	}while(temp!=first);
+
 	if(foundFlag==0){
 		printf("\n\tNo such worker found!");
 	}
+}
+
+void exit_program(){
+    temp = first;
+    while (temp != NULL) {
+        struct worker* nextNode = temp->right;
+        free(temp);
+        temp = nextNode;
+    }
+	exit(0);
 }
 
 
@@ -225,7 +240,7 @@ void main()
 		case 7:delete_middle();break;
 		case 8:delete_end();break;
 		case 9:search();break;
-		case 10:exit(0);
+		case 10:exit_program();
 	}
 	getch();
  }
