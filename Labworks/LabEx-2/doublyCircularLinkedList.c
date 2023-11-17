@@ -59,7 +59,7 @@ void display_forward()
     }
     printf("Forward Display of Workers : \n");
 	do{
-		printf("[%s]--->",temp -> name );
+		printf("<--[%s]--->",temp -> name );
         temp = temp-> right ;
 	}while(temp!=first);
 	printf("(%s)",last->right->name);
@@ -74,7 +74,7 @@ void display_backward()
     }
     printf("Backward Display of Workers : \n");
 	do{
-		printf("[%s]--->",temp -> name );
+		printf("<--[%s]--->",temp -> name );
         temp = temp-> left ;
 	}while(temp!=last);
 	printf("(%s)",first->left->name);
