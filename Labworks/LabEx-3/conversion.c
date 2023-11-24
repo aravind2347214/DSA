@@ -6,14 +6,6 @@
 char stack[100];
 int top=-1;
 
-void displayStack(char stack[], int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        printf("%c", stack[i]);
-    }
-}
-
 void push(char x)
 {
     if (top < 99)
@@ -84,19 +76,38 @@ void infixToPostfix(char exp[])
 
     void main()
     {
-        char exp[100];
-        char op, ch;
-        int i = 0;
-        printf("Enter the infix expression: ");
-        while ((ch = getchar()) != '\n')
-        {
-            exp[i++] = ch;
+   int opt;
+	opt=0;
+	while(1)
+ {
+    char exp[100];
+	printf("\n");
+	printf(" +--------------Menu-------------+\n");
+	printf(" | 1.Enter Infix Expression      |\n");
+    printf(" | 2.Display Postfix Expression  |\n");
+	printf(" | 3.Exit                        |\n");
+    printf(" +-------------------------------+\n");
+	printf("Enter your option");
+	scanf("%d",&opt);
+	switch(opt)
+	{
+		case 1:{
+            printf("Enter the infix expression: ");
+            scanf("%s", exp);
+            break;
         }
-        exp[i] = '\0';
-        int n = i + 1;
-        top = i;
-        // Converting Infix Expression into Postfix Expression
-        printf("Postfix Expression: ");
-        infixToPostfix(exp);
-        getch();
-    }
+        case 2:{
+            printf("Postfix Expression: ");
+            infixToPostfix(exp);
+            break;
+            }
+        case 3:
+            exit(0);break;
+	  }
+  }
+    // printf("Enter the infix expression: ");
+    // scanf("%s", exp);
+    // // Converting Infix Expression into Postfix Expression
+    // printf("Postfix Expression: ");
+    // infixToPostfix(exp);
+}
