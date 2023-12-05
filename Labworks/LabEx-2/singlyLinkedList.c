@@ -34,14 +34,14 @@ int create(){
 		printf("want to add more workers(Y/N)");
 		ch=getch();
 		if(ch=='n'||ch=='N')
-         return(0);	
-	temp=first;
+         return(0);		      
+  }
+  temp=first;
 	while(temp->right!=NULL)
 	{
 		temp=temp->right;
 		last=temp;
-	}	      
-  }
+	}
 }
 
 
@@ -97,6 +97,7 @@ void insert_end(){
 	}
 	last->right=newptr;
 	newptr->right=NULL;
+	last=newptr;
 }
 
 void insert_middle(){
