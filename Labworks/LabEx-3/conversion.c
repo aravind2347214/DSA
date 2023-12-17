@@ -105,9 +105,4 @@ void infixToPostfix(char exp[])
             exit(0);break;
 	  }
   }
-    // printf("Enter the infix expression: ");
-    // scanf("%s", exp);
-    // // Converting Infix Expression into Postfix Expression
-    // printf("Postfix Expression: ");
-    // infixToPostfix(exp);
 }

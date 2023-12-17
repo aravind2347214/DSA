@@ -56,7 +56,8 @@ void insert_begining()
    printf("\nenter data ");
    scanf("%d",&newptr->info);
    if(first==NULL)
-      first=temp=newptr;
+      {first=temp=newptr;
+	  first->right=NULL;}
 	else
 	{
       newptr->right=first;
@@ -70,14 +71,21 @@ void insert_end()
    newptr=(struct node*) malloc(sizeof(struct node)); 	  	
    printf("\nenter data ");
    scanf("%d",&newptr->info);
+   if(first==NULL){
+	first=temp=newptr;
+	first->right=NULL;
+   }
+   else{
+	temp=first;
 	newptr->right=NULL;
 	while(temp->right!=NULL)
 	{
 		temp=temp->right;
 		last=temp;
 	}	      
-   last->right=newptr;
+    last->right=newptr;
 	last=newptr;
+   }
 }
 
 void insert_middle()
@@ -117,12 +125,13 @@ void delete_begining()
 void delete_end()
 {
 	temp=first;
-		while(temp->right!=NULL)
+	while(temp->right!=NULL)
 	{
 		prev=temp;
 		temp=temp->right;
-		last=temp;
-	}	     
+	}	   
+	last= prev->right;
+	temp=last;  
 	prev->right=NULL;
 	last=prev;
     printf("\nLast Element deleted\n");
