@@ -21,7 +21,6 @@ void insertionSort(){
         for(int i=0;i<insortlen;i++){
         printf("[%d] ",insortList[i]);}
         printf("\n");
-
     }
 
     printf("The Sorted List is --");

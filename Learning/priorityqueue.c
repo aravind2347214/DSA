@@ -1,75 +1,110 @@
-#include <stdio.h>
-#include <stdlib.h>
+    #include<stdio.h>
+    #include<stdlib.h>
+    #include<string.h>
 
-typedef struct node {
-    int data;
+    struct Node {
+        char name[10];
+        int priority;
+        struct Node* next;
+    };
 
-    int priority;
+    struct Node* front = NULL;
 
-    struct node* next;
-
-} Node;
-
-Node* newNode(int d, int p)
-{
-    Node* temp = (Node*)malloc(sizeof(Node));
-    temp->data = d;
-    temp->priority = p;
-    temp->next = NULL;
-    return temp;
-}
-
-int peek(Node** head)
-{
-    return (*head)->data;
-}
-
-void pop(Node** head)
-{
-    Node* temp = *head;
-    (*head) = (*head)->next;
-    free(temp);
-}
-
-void push(Node** head, int d, int p)
-{
-    Node* start = (*head);
-    Node* temp = newNode(d, p);
-
-    if ((*head)->priority > p) {
-
-        temp->next = *head;
-        (*head) = temp;
-    }
-    else {
-
-        while (start->next != NULL &&
-            start->next->priority < p) {
-            start = start->next;
+    void NodeEnqueue() {
+        struct Node* newptr = (struct Node*)malloc(sizeof(struct Node));
+        if (newptr == NULL) {
+            printf("Memory allocation error!!");
+            return;
         }
 
-        temp->next = start->next;
-        start->next = temp;
+        printf("\nEnter Name of new Node: ");
+        scanf("%s", newptr->name);
+
+        printf("Enter Priority of new Node: ");
+        scanf("%d", &newptr->priority);
+
+        newptr->next = NULL;
+
+        if (front == NULL || newptr->priority < front->priority) {
+            newptr->next = front;
+            front = newptr;
+        } else {
+            struct Node* temp = front;
+            while (temp->next != NULL && temp->next->priority <= newptr->priority) {
+                temp = temp->next;
+            }
+            newptr->next = temp->next;
+            temp->next = newptr;
+        }
+
+        printf("\nNode Enqueued with Priority %d!\n", newptr->priority);
     }
-}
 
-int isEmpty(Node** head)
-{
-    return (*head) == NULL;
-}
-
-int main()
-{
-    // Create a Priority Queue
-    // 70->40->50->60
-    Node* pq = newNode(40, 1);
-    push(&pq, 50, 2);
-    push(&pq, 60, 3);
-    push(&pq, 70, 0);
-
-    while (!isEmpty(&pq)) {
-        printf("%d ", peek(&pq));
-        pop(&pq);
+    void NodeDequeue() {
+        if (front == NULL) {
+            printf("\nThere are no Nodes in the Priority Queue!\n");
+        } else {
+            struct Node* temp = front;
+            front = front->next;
+            free(temp);
+            printf("\nHighest Priority Node Dequeued!\n");
+        }
     }
-    return 0;
-}
+
+    void peekPriorityQueue() {
+        struct Node* temp = front;
+
+        if (temp == NULL) {
+            printf("Priority Queue is Empty!\n");
+            return;
+        }
+
+        printf("Priority Queue: ");
+        while (temp != NULL) {
+            printf("[%s, Priority: %d] <-- ", temp->name, temp->priority);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
+
+    void showHighestPriorityItem(){
+        printf("Highest Priority Node : %s",front->name);
+    }
+
+    int main() {
+        int opt;
+
+        while (1) {
+            printf("\n");
+            printf(" +-------Priority-Queue-Menu-------+\n");
+            printf(" | 1. Enqueue Node with Priority |\n");
+            printf(" | 2. Dequeue Highest Priority     |\n");
+            printf(" | 3. Display Priority Queue       |\n");
+            printf(" | 4. Show Highest Priority Item   |\n");
+            printf(" | 5. Exit                         |\n");
+            printf(" +---------------------------------+\n");
+            printf("Enter your option : ");
+            scanf("%d", &opt);
+
+            switch (opt) {
+                case 1:
+                    NodeEnqueue();
+                    break;
+                case 2:
+                    NodeDequeue();
+                    break;
+                case 3:
+                    peekPriorityQueue();
+                    break;
+                case 4:
+                    showHighestPriorityItem();
+                    break;
+                case 5:
+                    exit(0);
+                default:
+                    printf("Invalid Option! Please try again.\n");
+            }
+        }
+
+        return 0;
+    }

@@ -3,9 +3,9 @@
 #include<stdlib.h>
 #include<string.h>
 
-struct worker{
-    char name[10];
-    struct worker *right;
+struct Node{
+    char data[10];
+    struct Node *right;
 }*newptr,*first,*last,*temp,*prev,*next;
 
 int numberOfNodes=0;
@@ -15,13 +15,13 @@ int create(){
     char ch;
 	while(1)
 	{
-		newptr=(struct worker*) malloc(sizeof(struct worker));
+		newptr=(struct Node*) malloc(sizeof(struct Node));
 		if(newptr==NULL){
 				printf("Memory allocation error");
 				return 0;
 			}
-		printf("\nEnter Name of worker");
-		scanf("%s",&newptr->name);
+		printf("\nEnter data of Node");
+		scanf("%s",&newptr->data);
 		numberOfNodes++;
 		newptr->right=NULL;
 		if(first==NULL)
@@ -31,7 +31,7 @@ int create(){
 				temp->right=newptr;
 				temp=temp->right;
 			}
-		printf("want to add more workers(Y/N)");
+		printf("want to add more Nodes(Y/N)");
 		ch=getch();
 		if(ch=='n'||ch=='N')
          return(0);	
@@ -48,24 +48,24 @@ int create(){
 void display(){
     temp= first;
     if(temp==NULL){
-        printf("There are no workers\n"); 
+        printf("There are no Nodes\n"); 
         return;
     }
     while(temp != NULL) {
-        printf("[%s]--->",temp -> name );
+        printf("[%s]--->",temp -> data );
         temp = temp-> right ;
     }
 	printf("NULL \n");
 }
 
 void enqueue(){
-	newptr=(struct worker*)malloc(sizeof(struct worker));
+	newptr=(struct Node*)malloc(sizeof(struct Node));
 	if(newptr==NULL){
 		printf("Memory allocation error");
 		return;
 	}
-	printf("\nEnter Name of new Worker : ");
-	scanf("%s",&newptr->name);
+	printf("\nEnter data of new Node : ");
+	scanf("%s",&newptr->data);
 	numberOfNodes++;
 	newptr->right=NULL;
 	temp= first;
@@ -79,14 +79,14 @@ void enqueue(){
 
 void dequeue(){
 	if(first==NULL){
-		printf("\nThere are no Workers");
+		printf("\nThere are no Nodes");
 	}
 	else{
 		temp = first;
 		first = first -> right;
 		free(temp);
 		numberOfNodes--;
-		printf("\nFirst Worker deleted\n");
+		printf("\nFirst Node deleted\n");
 
 
 	}
@@ -95,7 +95,7 @@ void dequeue(){
 void exit_program(){
     temp = first;
     while (temp != NULL) {
-        struct worker* nextNode = temp->right;
+        struct Node* nextNode = temp->right;
         free(temp);
         temp = nextNode;
     }
@@ -111,11 +111,11 @@ void main()
 	while(1)
  {
     printf("\n");
-	printf(" +---------Worker-Menu---------+\n");
-	printf(" | 1.Create Workers Queue      |\n");
-	printf(" | 2.Display Workers Queue     |\n");
-	printf(" | 3.Enqueue Workers           |\n");
-	printf(" | 4.Dequeue Workers           |\n");
+	printf(" +---------Node-Menu---------+\n");
+	printf(" | 1.Create Nodes Queue      |\n");
+	printf(" | 2.Display Nodes Queue     |\n");
+	printf(" | 3.Enqueue Nodes           |\n");
+	printf(" | 4.Dequeue Nodes           |\n");
 	printf(" | 5.Exit                      |\n");
     printf(" +-----------------------------+\n");
 	printf("enter your option");

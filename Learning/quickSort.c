@@ -1,62 +1,57 @@
-//   write me the algorithm for quicksort in c
-
-//  this is a simple implementation of quicksort algorithm.
-//  it takes an array and its size as input parameters, and returns void.
-
-#include<stdio.h>
-#include<stdlib.h>
-void QuickSort(int arr[], int l, int r)
+#include <stdio.h>
+#include <stdlib.h>
+int partition(int arr[], int low, int high)
 {
-    if (l < r)
+    int pivot = arr[high]; // Choose the last element as the pivot
+    int i = low - 1;       // Index of the smaller element
+    for (int j = low; j < high; j++)
     {
-        /* pi is partitioning index, i and j are boundaries of left subarray */
-        int pi = l, i = l + 1, j = r;
-        int temp;
-        /* this loop will run till i is less than j */
-        while (i <= j)
+        // If the current element is smaller than or equal to the pivot
+        if (arr[j] <= pivot)
         {
-            /* If element at i is smaller than or equal to pivot then increment i */
-            if (arr[i] <= arr[pi])
-            {
-                temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-                j--;
-            }
-            else
-            {
-                temp = arr[i];
-                arr[i] = arr[pi];
-                arr[pi] = temp;
-                i++;
-            }
+            i++;
+            // Swap arr[i] and arr[j]
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
         }
-        /* pi is now on the correct position in the sorted array */
-        /* swap elements at i and j */
-        /* so, put the smallest one at the beginning of the list */
-        temp = arr[i];
-        arr[i] = arr[pi];
-        arr[pi] = temp;
-        /* recur for the two partitions */
-        QuickSort(arr, l, pi - 1);
-        QuickSort(arr, pi + 1, r);
+    }
+    // Swap arr[i+1] and arr[high] (pivot)
+    int temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+    return i + 1; // Return the pivot index
+}
+// Function to perform Quick Sort on the array
+void quickSort(int arr[], int low, int high)
+{
+    if (low < high)
+    {
+        // Find the pivot index
+        int pivotIndex = partition(arr, low, high);
+        // Recursively sort elements before and after the pivot
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
     }
 }
-/* Function to print an array */
-void PrintArray(int arr[], int n)
+// Function to print the array
+void printArray(int arr[], int size)
 {
-    int i;
-    printf("The Sorted Array: \n");
-    for (i = 0; i < n; ++i)
+    for (int i = 0; i < size; i++)
+    {
         printf("%d ", arr[i]);
+    }
     printf("\n");
 }
-/* Driver program to test above function*/
 int main()
 {
-    int arr[] = {-7, 5, 2, 4, -3, 8};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    QuickSort(arr, 0, n - 1);
-    PrintArray(arr, n);
+    int arr[] = {64, 25, 12, 22, 11};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    printf("Original array: ");
+    printArray(arr, size);
+        // Perform Quick Sort
+    quickSort(arr, 0, size - 1);
+    printf("Sorted array: ");
+    printArray(arr, size);
     return 0;
 }
