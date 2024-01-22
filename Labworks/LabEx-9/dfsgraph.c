@@ -1,99 +1,87 @@
 #include <stdio.h>
-
-// Maximum number of workers
-#define MAX_WORKERS 20
-
-int adj[MAX_WORKERS][MAX_WORKERS], n, m, q[MAX_WORKERS], visited[MAX_WORKERS];
-
-// Worker structure
-struct worker {
-    int id;
-    char name[20];
+// n vertices and m connections
+int adjWorkerMatrix[20][20], n,m, q[20],visitedWorkers[20];
+//connection representation
+struct connection
+{
+	int s,d;
 };
+struct connection e[20];
+// Function to create AdjWorkerMatrixacency Matrix
 
-// Edge representation
-struct edge {
-    int s, d;
-};
-
-struct edge e[MAX_WORKERS];
-
-// Function to create Adjacency Matrix
-void createAdjMatrix(struct edge e[]) {
-    int i, j, x, y;
-
-    // Initialize the adjacency matrix to zero
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            adj[i][j] = 0;
+void createadjWorkerMatrix( struct connection e[])
+{
+    int i,j,x,y;
+	// Initialise all value to this AdjWorkerMatrix matrix to zero
+    for ( i = 0; i < n ; i++) {
+  
+        for (j = 0; j < n ; j++) {
+            adjWorkerMatrix[i][j] = 0;
         }
     }
-
-    // Traverse the array of Edges
-    for (i = 0; i < m; i++) {
-        // Find X and Y of Edges as source and destination of the edges
-        x = e[i].s;
+  
+    // Traverse the array of connections
+    for (i = 0; i < m; i++) 
+	{
+        // Find X and Y of connections as source and destination of the connections
+         x = e[i].s;
         y = e[i].d;
-        // Update value to 1
-        adj[x][y] = 1;
-        adj[y][x] = 1; // not required in the case of a directed graph
+       // Update value to 1
+        adjWorkerMatrix[x][y] = 1;
+        adjWorkerMatrix[y][x] = 1;//not required in case of directed graph
+   }
+    for (i = 0; i < n ; i++) 
+   {
+   		 for (j = 0; j < n ; j++) 
+		    printf("%d ", adjWorkerMatrix[i][j]);
+         printf("\n");
     }
-
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++)
-            printf("%d ", adj[i][j]);
-        printf("\n");
+        
     }
-}
-
-void dfs(int v) {
-    int i;
-    for (i = 0; i < n; i++) {
-        if (adj[v][i] != 0 && visited[i] == 0) {
-            visited[i] = 1;
-            printf("%d  ", i);
-            dfs(i);
-        }
-    }
-}
-
-int main() {
-    int i, j, v;
-    char ch = 'y';
-
-    m = 0;
-    i = 0;
-
-    printf("Enter the number of workers: ");
-    scanf("%d", &n);
-
-    while (ch == 'y') {
-        printf("Enter the ID of the worker: ");
-        scanf("%d", &e[i].s);
-        printf("Enter the ID of the worker to connect: ");
-        scanf("%d", &e[i].d);
-        printf("Do you want to add more connections? (y/n): ");
-        fflush(stdin);
-        scanf(" %c", &ch);
-        m = m + 1;
-        i++;
-    }
-
-    // Function call to create Adjacency Matrix
-    createAdjMatrix(e);
-
-    for (i = 0; i < n; i++) {
-        visited[i] = 0;
-    }
-
-    printf("\nEnter the starting worker ID: ");
-    scanf("%d", &v);
-
-    printf("\nDFS traversal is:\n");
-    visited[v] = 1;
-    printf("%d   ", v);
-    dfs(v);
-
-    return 0;
+  void dfs(int v)
+{
+       int i;
+       for (i=0;i<n;i++)                                // check all the vertices in the graph
+       {
+               if(adjWorkerMatrix[v][i] != 0 && visitedWorkers[i] == 0) // adjWorkerMatrixacent to v and not visitedWorkers
+              {
+                       visitedWorkers[i]=1;          // mark the vertex visitedWorkers
+                       printf("%d  ",i);
+                       dfs(i);
+              }
+      }
 }
  
+int main()
+{
+  int i, j,v;
+  char ch='y';
+  m=0;i=0;
+  printf("Enter no of workers: ");
+  scanf("%d", &n);
+  
+ while(ch=='y')
+ {
+   	printf("Enter  source workerID of connection: ");
+   	scanf("%d", &e[i].s);
+   	printf("Enter destination workerID of connection: ");
+   	scanf("%d", &e[i].d);
+    printf("do you want to add connections: ");
+    fflush(stdin);
+    scanf("%c", &ch);
+    m=m+1;
+    i++;
+  }
+  // Function call to create AdjWorkerMatrixacency Matrix
+    createadjWorkerMatrix(e);
+    for (i=0;i<n;i++)                   // mark all the vertices as not visitedWorkers
+    {
+        visitedWorkers[i]=0;
+    }
+    printf("\n Enter the starting workerID :");
+    scanf("%d",&v);
+   printf("\n DFS traversal of workers are:\n");
+    visitedWorkers[v]=1; // mark the starting vertex as visitedWorkers
+    printf("%d   ",v);
+    dfs(v);
+   }
